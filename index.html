@@ -9,29 +9,41 @@
             const startButton = document.getElementById('startButton');
 
             startButton.addEventListener('click', async () => {
-                const FNLB = await import('fnlb');
+                try {
+                    // Import the FNLB library
+                    const FNLB = await import('fnlb');
 
-                const fnlb = new FNLB.default();
+                    // Initialize FNLB with the correct API token and configurations
+                    const fnlb = new FNLB.default();
 
-                async function startFNLB() {
-                    await fnlb.start({
-                        apiToken: 'DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6',
-                        numberOfShards: 1,
-                        botsPerShard: 5,
-                        categories: ['67c2fd571906bd75e5239684'],
-                        logLevel: 'DEBUG'
-                    });
-                }
+                    // Start FNLB with your API token, number of shards, bots per shard, and categories
+                    async function startFNLB() {
+                        console.log("Starting FNLB...");
+                        await fnlb.start({
+                            apiToken: 'DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6', // Replace with your actual API token
+                            numberOfShards: 2,  // Number of shards (subprocesses)
+                            botsPerShard: 10,   // Bots per shard
+                            categories: ['67c2fd571906bd75e5239684', '67c5afb82304e29c074f5077'], // Replace with actual category IDs
+                            logLevel: 'DEBUG'   // Set log level to DEBUG for detailed logs
+                        });
+                    }
 
-                async function restartFNLB() {
-                    console.log('Restarting FNLB...');
-                    await fnlb.stop();
+                    // Restart FNLB if necessary
+                    async function restartFNLB() {
+                        console.log('Restarting FNLB...');
+                        await fnlb.stop();
+                        await startFNLB();
+                    }
+
+                    // Start FNLB
                     await startFNLB();
+
+                    // Restart FNLB every hour (3600000 ms)
+                    setInterval(restartFNLB, 3600000);
+
+                } catch (error) {
+                    console.error("Error starting FNLB:", error);
                 }
-
-                await startFNLB();
-
-                setInterval(restartFNLB, 3600000); // Every hour
             });
         });
     </script>
