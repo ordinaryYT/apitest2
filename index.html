@@ -1,31 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start FNLB Bot</title>
+    <title>FNLB Bot Starter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f0f0f0;
+        }
+        #startBtn {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #startBtn:hover {
+            background-color: #45a049;
+        }
+        #startBtn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Start FNLB Bot</h1>
-    <button id="startButton">Start Bot</button>
+    <h1>FNLB Bot Controller</h1>
+    <button id="startBtn">START BOTS</button>
+    <div id="status">Ready when you are!</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/fnlb"></script>
-    <script>
-        document.getElementById('startButton').addEventListener('click', async () => {
-            const FNLB = window.FNLB;  // Assuming FNLB is globally available
-            const fnlb = new FNLB();
-
-            try {
-                await fnlb.start({
-                    apiToken: 'DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6',
-                    numberOfShards: 2,
-                    botsPerShard: 10
-                });
-                alert("Bot started successfully!");
-            } catch (error) {
-                alert("Error starting bot: " + error.message);
-            }
-        });
-    </script>
+    <!-- Include FNLB from CDN (if available) or bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/fnlb@latest/dist/fnlb.min.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
