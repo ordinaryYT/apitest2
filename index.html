@@ -10,39 +10,53 @@
 
             startButton.addEventListener('click', async () => {
                 try {
-                    // Import the FNLB library
+                    // Log that the button was clicked
+                    console.log("Start button clicked!");
+
+                    // Import FNLB dynamically
                     const FNLB = await import('fnlb');
+                    console.log("FNLB module imported successfully.");
 
-                    // Initialize FNLB with the correct API token and configurations
                     const fnlb = new FNLB.default();
+                    console.log("FNLB instance created.");
 
-                    // Start FNLB with your API token, number of shards, bots per shard, and categories
+                    // Function to start FNLB bots
                     async function startFNLB() {
-                        console.log("Starting FNLB...");
-                        await fnlb.start({
-                            apiToken: 'DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6', // Replace with your actual API token
-                            numberOfShards: 2,  // Number of shards (subprocesses)
-                            botsPerShard: 10,   // Bots per shard
-                            categories: ['67c2fd571906bd75e5239684', '67c5afb82304e29c074f5077'], // Replace with actual category IDs
-                            logLevel: 'DEBUG'   // Set log level to DEBUG for detailed logs
-                        });
+                        try {
+                            console.log("Starting FNLB bots...");
+                            await fnlb.start({
+                                apiToken: 'DGfCBefvjOU-UORpSFBh8gbArVEGkKK5xb-BB7kZk8NfEFj6hiCf8v2Nefu6', // Replace with actual API token
+                                numberOfShards: 2,  // Number of shards (subprocesses)
+                                botsPerShard: 10,   // Bots per shard
+                                categories: ['67c2fd571906bd75e5239684', '67c5afb82304e29c074f5077'], // Replace with actual category IDs
+                                logLevel: 'DEBUG'   // Set log level to DEBUG for detailed logs
+                            });
+                            console.log("FNLB bots started successfully.");
+                        } catch (err) {
+                            console.error("Error starting FNLB:", err);
+                        }
                     }
 
-                    // Restart FNLB if necessary
+                    // Function to restart FNLB if necessary
                     async function restartFNLB() {
-                        console.log('Restarting FNLB...');
-                        await fnlb.stop();
-                        await startFNLB();
+                        try {
+                            console.log('Restarting FNLB...');
+                            await fnlb.stop();
+                            await startFNLB();
+                        } catch (err) {
+                            console.error("Error restarting FNLB:", err);
+                        }
                     }
 
-                    // Start FNLB
+                    // Start FNLB bots
                     await startFNLB();
+                    console.log("FNLB started, setting up restart interval...");
 
                     // Restart FNLB every hour (3600000 ms)
                     setInterval(restartFNLB, 3600000);
 
                 } catch (error) {
-                    console.error("Error starting FNLB:", error);
+                    console.error("Error in FNLB initialization:", error);
                 }
             });
         });
