@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FNLB Control</title>
+    <script type="module">
+        document.addEventListener("DOMContentLoaded", () => {
+            const startButton = document.getElementById('startButton');
+
+            startButton.addEventListener('click', async () => {
+                const FNLB = await import('fnlb');
+
+                const fnlb = new FNLB.default();
+
+                async function startFNLB() {
+                    await fnlb.start({
+                        apiToken: 'API Token',
+                        numberOfShards: 1,
+                        botsPerShard: 5,
+                        categories: ['category ID'],
+                        logLevel: 'DEBUG'
+                    });
+                }
+
+                async function restartFNLB() {
+                    console.log('Restarting FNLB...');
+                    await fnlb.stop();
+                    await startFNLB();
+                }
+
+                await startFNLB();
+
+                setInterval(restartFNLB, 3600000); // Every hour
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>FNLB Control</h1>
+    <button id="startButton">Start FNLB</button>
+</body>
+</html>
